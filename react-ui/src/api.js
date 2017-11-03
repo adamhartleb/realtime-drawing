@@ -1,6 +1,6 @@
 import openSocket from 'socket.io-client'
 
-const socket = openSocket('http://localhost:5000/')
+const socket = openSocket('https://intense-sea-37553.herokuapp.com/')
 
 export const subscribeToDrawings = callback => {
   socket.on('drawing', callback)

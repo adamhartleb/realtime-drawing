@@ -56,9 +56,9 @@ const subscribeToNewDrawings = ({ connection, client, drawingId }) => {
 
 r
 	.connect({
-		host: "localhost",
+		host: process.env.DOCKHERO_HOST || "localhost",
 		port: 28015,
-		db: "awesome_whiteboard"
+		db: "test"
 	})
 	.then(connection => {
 		io.on("connection", client => {
