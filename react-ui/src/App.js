@@ -29,7 +29,7 @@ class App extends Component {
 		return (
 			<div className="App">
 				<div className="App-header">
-					<h2>Our awesome drawing app</h2>
+					<h2>Drawww</h2>
 				</div>
 				{this.state.selectedDrawing ? (
 					<Drawing drawing={this.state.selectedDrawing} key={this.state.selectedDrawing.id} />
