@@ -77,6 +77,7 @@ r
           .run(connection)
           .then(() => {
             io.on('connection', client => {
+							console.log("############CONNECTED#####################")
               client.on('createDrawing', ({ name }) => {
                 createDrawing(connection, name)
               })
