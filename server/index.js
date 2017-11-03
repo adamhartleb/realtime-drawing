@@ -58,6 +58,7 @@ r
 	.connect({
 		host: process.env.DOCKHERO_HOST || "localhost",
 		port: 28015,
+		password: process.env.RETHINKDB_ADMIN_PASSWORD,
 		db: "test"
 	})
 	.then(connection => {
