@@ -1,58 +1,44 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react"
+import "./App.css"
+
+import DrawingForm from "./DrawingForm"
+import DrawingList from "./DrawingList"
+import Drawing from "./Drawing"
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      message: null,
-      fetching: true
-    };
-  }
+	state = {
+		selectedDrawing: null
+	}
 
-  componentDidMount() {
-    fetch('/api')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`status ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(json => {
-        this.setState({
-          message: json.message,
-          fetching: false
-        });
-      }).catch(e => {
-        this.setState({
-          message: `API call failed: ${e}`,
-          fetching: false
-        });
-      })
-  }
+	selectDrawing = drawing => {
+		this.setState({
+			selectedDrawing: drawing
+		})
+	}
 
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          {'This is '}
-          <a href="https://github.com/mars/heroku-cra-node">
-            {'create-react-app with a custom Node/Express server'}
-          </a><br/>
-        </p>
-        <p className="App-intro">
-          {this.state.fetching
-            ? 'Fetching message from API'
-            : this.state.message}
-        </p>
-      </div>
-    );
-  }
+	renderDrawingList = () => {
+		return (
+			<div>
+				<DrawingForm />
+				<DrawingList selectDrawing={this.selectDrawing} />
+			</div>
+		)
+	}
+
+	render() {
+		return (
+			<div className="App">
+				<div className="App-header">
+					<h2>Our awesome drawing app</h2>
+				</div>
+				{this.state.selectedDrawing ? (
+					<Drawing drawing={this.state.selectedDrawing} key={this.state.selectedDrawing.id} />
+				) : (
+					this.renderDrawingList()
+				)}
+			</div>
+		)
+	}
 }
 
-export default App;
+export default App
