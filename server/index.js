@@ -66,36 +66,22 @@ r
     db: 'test'
   })
   .then(connection => {
-    r
-      .db('test')
-      .tableCreate('drawings')
-      .run(connection)
-      .then(() => {
-        r
-          .db('test')
-          .tableCreate('lines')
-          .run(connection)
-          .then(() => {
-            io.on('connection', client => {
-							console.log("############CONNECTED#####################")
-              client.on('createDrawing', ({ name }) => {
-                createDrawing(connection, name)
-              })
-
-              client.on('subscribeToDrawings', () => {
-                subscribeToDrawings({ client, connection })
-              })
-
-              client.on('publishDrawing', line =>
-                publishDrawing({ connection, line })
-              )
-
-              client.on('subscribeToNewDrawings', drawingId => {
-                subscribeToNewDrawings({ connection, client, drawingId })
-              })
-            })
-          })
+    io.on('connection', client => {
+      console.log('############CONNECTED#####################')
+      client.on('createDrawing', ({ name }) => {
+        createDrawing(connection, name)
       })
+
+      client.on('subscribeToDrawings', () => {
+        subscribeToDrawings({ client, connection })
+      })
+
+      client.on('publishDrawing', line => publishDrawing({ connection, line }))
+
+      client.on('subscribeToNewDrawings', drawingId => {
+        subscribeToNewDrawings({ connection, client, drawingId })
+      })
+    })
   })
 
 const PORT = process.env.PORT || 5000
