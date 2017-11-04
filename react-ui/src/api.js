@@ -1,4 +1,5 @@
 import openSocket from 'socket.io-client'
+import Rx from 'rxjs/Rx'
 
 const socket = openSocket('https://intense-sea-37553.herokuapp.com/')
 
@@ -16,6 +17,15 @@ export const publishDrawing = ({ drawingId, line }) => {
 }
 
 export const subscribeToNewDrawings = (drawingId, callback) => {
-  socket.on(`drawingLine:${drawingId}`, callback)
+  const lineStream = Rx.Observable.fromEventPattern(
+    h => socket.on(`drawingLine:${drawingId}`, h),
+    h => socket.off(`drawingLine:${drawingId}`, h)
+  )
+
+  const bufferedStream = lineStream
+    .bufferTime(100)
+    .map(lines => ({ lines }))
+
+  bufferedStream.subscribe(linesEvent => callback(linesEvent))
   socket.emit('subscribeToNewDrawings', drawingId)
 }
